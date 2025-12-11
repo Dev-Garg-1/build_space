@@ -35,8 +35,8 @@ Compose sections like hero, features, testimonials, pricing, and more, tweak eve
 
 > Add links here when ready.
 
-- Live demo: `https://your-demo-url.com`  
-- Video walkthrough: `https://your-demo-video-link.com`
+- Live demo: `https://buildspace-phoenix.vercel.app/`  
+- Video walkthrough: `https://drive.google.com/file/d/1F7kkRy5I2Ia7Yy7jk1fvExo7-DT8t2xB/view?usp=sharing`
 
 ---
 
