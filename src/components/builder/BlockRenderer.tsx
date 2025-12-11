@@ -11,6 +11,10 @@ import { ThemeToggleBlock } from './blocks/ThemeToggleBlock';
 import { FooterBlock } from './blocks/FooterBlock';
 import { ImageGalleryBlock } from './blocks/ImageGalleryBlock';
 import { VideoEmbedBlock } from './blocks/VideoEmbedBlock';
+import { TeamBlock } from './blocks/TeamBlock';
+import { BlogBlock } from './blocks/BlogBlock';
+import { NewsletterBlock } from './blocks/NewsletterBlock';
+import { CTABannerBlock } from './blocks/CTABannerBlock';
 
 interface BlockRendererProps {
   block: ComponentBlock;
@@ -33,6 +37,10 @@ export const BlockRenderer = ({ block, onUpdate, isPreview, isDarkTheme }: Block
     footer: FooterBlock,
     imageGallery: ImageGalleryBlock,
     videoEmbed: VideoEmbedBlock,
+    team: TeamBlock,
+    blog: BlogBlock,
+    newsletter: NewsletterBlock,
+    ctaBanner: CTABannerBlock,
   };
 
   const Component = blockComponents[block.type];

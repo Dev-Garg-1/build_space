@@ -10,7 +10,11 @@ export type ComponentType =
   | 'faq'
   | 'footer'
   | 'imageGallery'
-  | 'videoEmbed';
+  | 'videoEmbed'
+  | 'team'
+  | 'blog'
+  | 'newsletter'
+  | 'ctaBanner';
 
 export interface ComponentBlock {
   id: string;
