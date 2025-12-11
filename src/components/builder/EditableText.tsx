@@ -1,21 +1,45 @@
 import { useState, useRef, useEffect } from 'react';
+import { TextEditPopover } from './TextEditPopover';
 
 interface EditableTextProps {
   value: string;
   onChange: (value: string) => void;
+  onRemove?: () => void;
   className?: string;
   as?: 'h1' | 'h2' | 'h3' | 'p' | 'span';
   isPreview?: boolean;
+  enableLink?: boolean;
+  link?: string;
+  onLinkChange?: (link: string, openInNewTab: boolean) => void;
+  openInNewTab?: boolean;
+  enableColor?: boolean;
+  color?: string;
+  onColorChange?: (color: string) => void;
+  enableFontStyle?: boolean;
+  fontStyle?: string;
+  onFontStyleChange?: (style: string) => void;
 }
 
 export const EditableText = ({ 
   value, 
-  onChange, 
+  onChange,
+  onRemove,
   className = '', 
   as: Component = 'span',
   isPreview = false,
+  enableLink = true,
+  link,
+  onLinkChange,
+  openInNewTab = false,
+  enableColor = true,
+  color,
+  onColorChange,
+  enableFontStyle = true,
+  fontStyle,
+  onFontStyleChange,
 }: EditableTextProps) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [editValue, setEditValue] = useState(value);
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
 
@@ -48,16 +72,53 @@ export const EditableText = ({
     }
   };
 
+  const handleDoubleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsPopoverOpen(true);
+  };
+
+  const handleClick = () => {
+    if (!isPopoverOpen) {
+      setIsEditing(true);
+    }
+  };
+
+  // Build inline styles based on props
+  const getInlineStyles = (): React.CSSProperties => {
+    const styles: React.CSSProperties = {};
+    if (color) styles.color = color;
+    if (fontStyle === 'bold') styles.fontWeight = 'bold';
+    if (fontStyle === 'italic') styles.fontStyle = 'italic';
+    if (fontStyle === 'underline') styles.textDecoration = 'underline';
+    return styles;
+  };
+
   // In preview mode, just render the text without editing capability
   if (isPreview) {
-    return (
-      <Component className={className}>
+    const content = (
+      <Component className={className} style={getInlineStyles()}>
         {value}
       </Component>
     );
+
+    if (link) {
+      return (
+        <a 
+          href={link} 
+          target={openInNewTab ? '_blank' : '_self'} 
+          rel={openInNewTab ? 'noopener noreferrer' : undefined}
+          className="hover:underline"
+        >
+          {content}
+        </a>
+      );
+    }
+
+    return content;
   }
 
-  if (isEditing) {
+  if (isEditing && !isPopoverOpen) {
     return (
       <input
         ref={inputRef as React.RefObject<HTMLInputElement>}
@@ -67,17 +128,36 @@ export const EditableText = ({
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
         className={`editable-text w-full bg-transparent ${className}`}
+        style={getInlineStyles()}
       />
     );
   }
 
   return (
-    <Component
-      onClick={() => setIsEditing(true)}
-      className={`cursor-text hover:bg-primary/10 rounded px-1 -mx-1 transition-colors ${className}`}
-      title="Click to edit"
+    <TextEditPopover
+      value={value}
+      onChange={onChange}
+      onRemove={onRemove}
+      link={link}
+      onLinkChange={enableLink ? onLinkChange : undefined}
+      openInNewTab={openInNewTab}
+      color={color}
+      onColorChange={enableColor ? onColorChange : undefined}
+      fontStyle={fontStyle}
+      onFontStyleChange={enableFontStyle ? onFontStyleChange : undefined}
+      isOpen={isPopoverOpen}
+      onOpenChange={setIsPopoverOpen}
+      isPreview={isPreview}
     >
-      {value}
-    </Component>
+      <Component
+        onClick={handleClick}
+        onDoubleClick={handleDoubleClick}
+        className={`cursor-text hover:bg-primary/10 rounded px-1 -mx-1 transition-colors ${className}`}
+        style={getInlineStyles()}
+        title="Click to edit, double-click for more options"
+      >
+        {value}
+      </Component>
+    </TextEditPopover>
   );
 };
