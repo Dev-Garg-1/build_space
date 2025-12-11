@@ -1,0 +1,22 @@
+export type ComponentType = 
+  | 'hero'
+  | 'features'
+  | 'testimonials'
+  | 'cta'
+  | 'contact'
+  | 'pricing'
+  | 'faq';
+
+export interface ComponentBlock {
+  id: string;
+  type: ComponentType;
+  content: Record<string, string>;
+}
+
+export interface ComponentTemplate {
+  type: ComponentType;
+  label: string;
+  icon: string;
+  description: string;
+  defaultContent: Record<string, string>;
+}
