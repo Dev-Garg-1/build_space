@@ -61,7 +61,7 @@ export const BuilderToolbar = ({
           <Eye className="w-3 h-3" />
           <span>Preview</span>
         </button>
-        <button onClick={onExport} className="mac-button-primary">
+        <button onClick={onExport} className="mac-button-primary border border-solid rounded-md">
           <Download className="w-3 h-3" />
           <span>Export</span>
         </button>
