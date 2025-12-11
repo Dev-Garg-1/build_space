@@ -36,16 +36,19 @@ const getBlockStyles = (styles?: BlockStyles): React.CSSProperties => {
   if (styles.marginTop) css.marginTop = `${styles.marginTop}px`;
   if (styles.marginBottom) css.marginBottom = `${styles.marginBottom}px`;
   
-  // Background
+  // Background - use !important equivalent by setting both background and backgroundColor
   if (styles.backgroundGradient) {
     css.background = styles.backgroundGradient;
+    css.backgroundColor = 'transparent';
   } else if (styles.backgroundColor) {
+    css.background = styles.backgroundColor;
     css.backgroundColor = styles.backgroundColor;
   }
   
   // Background image
   if (styles.backgroundImage) {
-    css.backgroundImage = `url(${styles.backgroundImage})`;
+    const bgImage = `url(${styles.backgroundImage})`;
+    css.backgroundImage = bgImage;
     css.backgroundSize = 'cover';
     css.backgroundPosition = styles.backgroundPosition || 'center';
     css.backgroundRepeat = styles.backgroundRepeat || 'no-repeat';
@@ -148,13 +151,13 @@ const SortableBlock = ({
 
       {/* Block Content with Applied Styles */}
       <div 
-        className="block-content"
+        className="block-content relative overflow-hidden"
         style={blockStyles}
       >
         {/* Background image overlay for opacity control */}
         {block.styles?.backgroundImage && block.styles?.backgroundOpacity && parseInt(block.styles.backgroundOpacity) < 100 && (
           <div 
-            className="absolute inset-0 pointer-events-none"
+            className="absolute inset-0 pointer-events-none z-0"
             style={{
               backgroundImage: `url(${block.styles.backgroundImage})`,
               backgroundSize: 'cover',
@@ -164,15 +167,17 @@ const SortableBlock = ({
             }}
           />
         )}
-        <BlockRenderer
-          block={block}
-          onUpdate={(content) => onUpdate(block.id, content)}
-          isDarkTheme={isDarkTheme}
-          onToggleTheme={onToggleTheme}
-          onEditButton={onEditButton}
-          onEditText={onEditText}
-          onEditImage={onEditImage}
-        />
+        <div className="relative z-10 [&>div]:!bg-transparent">
+          <BlockRenderer
+            block={block}
+            onUpdate={(content) => onUpdate(block.id, content)}
+            isDarkTheme={isDarkTheme}
+            onToggleTheme={onToggleTheme}
+            onEditButton={onEditButton}
+            onEditText={onEditText}
+            onEditImage={onEditImage}
+          />
+        </div>
       </div>
 
       {/* Selection indicator */}
