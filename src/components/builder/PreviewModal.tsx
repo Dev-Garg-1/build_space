@@ -13,10 +13,10 @@ interface PreviewModalProps {
 
 type ViewportSize = 'mobile' | 'tablet' | 'desktop';
 
-const viewportSizes: Record<ViewportSize, string> = {
-  mobile: 'w-[375px]',
-  tablet: 'w-[768px]',
-  desktop: 'w-full max-w-[1200px]',
+const viewportSizes: Record<ViewportSize, { width: string; maxWidth: string }> = {
+  mobile: { width: '375px', maxWidth: '375px' },
+  tablet: { width: '768px', maxWidth: '768px' },
+  desktop: { width: '100%', maxWidth: '1200px' },
 };
 
 export const PreviewModal = ({ isOpen, onClose, blocks, isDarkTheme = false }: PreviewModalProps) => {
@@ -56,6 +56,9 @@ export const PreviewModal = ({ isOpen, onClose, blocks, isDarkTheme = false }: P
                     <Monitor className="w-4 h-4" />
                   </button>
                 </div>
+                <span className="text-sm text-muted-foreground">
+                  {viewport === 'mobile' ? '375px' : viewport === 'tablet' ? '768px' : '1200px'}
+                </span>
               </div>
               <button
                 onClick={onClose}
@@ -69,22 +72,28 @@ export const PreviewModal = ({ isOpen, onClose, blocks, isDarkTheme = false }: P
             <div className="flex-1 overflow-auto p-8 flex justify-center">
               <motion.div
                 layout
-                className={`${viewportSizes[viewport]} ${isDarkTheme ? 'bg-slate-900' : 'bg-white'} rounded-lg shadow-2xl transition-all duration-300 max-h-full overflow-y-auto`}
+                style={{ 
+                  width: viewportSizes[viewport].width,
+                  maxWidth: viewportSizes[viewport].maxWidth 
+                }}
+                className={`${isDarkTheme ? 'bg-slate-900' : 'bg-white'} rounded-lg shadow-2xl transition-all duration-300 max-h-full overflow-y-auto`}
               >
                 {blocks.length === 0 ? (
                   <div className="p-12 text-center text-slate-500">
                     No components added yet
                   </div>
                 ) : (
-                  blocks.map((block) => (
-                    <BlockRenderer
-                      key={block.id}
-                      block={block}
-                      onUpdate={() => {}}
-                      isPreview
-                      isDarkTheme={isDarkTheme}
-                    />
-                  ))
+                  <div className={viewport === 'mobile' ? 'preview-mobile' : viewport === 'tablet' ? 'preview-tablet' : ''}>
+                    {blocks.map((block) => (
+                      <BlockRenderer
+                        key={block.id}
+                        block={block}
+                        onUpdate={() => {}}
+                        isPreview
+                        isDarkTheme={isDarkTheme}
+                      />
+                    ))}
+                  </div>
                 )}
               </motion.div>
             </div>

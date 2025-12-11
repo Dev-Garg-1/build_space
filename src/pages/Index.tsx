@@ -21,6 +21,7 @@ import { ExportModal } from '@/components/builder/ExportModal';
 import { SectionEditorPanel } from '@/components/builder/SectionEditorPanel';
 import { LayoutOverviewModal } from '@/components/builder/LayoutOverviewModal';
 import { TemplatesModal } from '@/components/builder/TemplatesModal';
+import { AIPromptModal } from '@/components/builder/AIPromptModal';
 import { ButtonEditPanel } from '@/components/builder/ButtonEditPanel';
 import { TextEditPanel } from '@/components/builder/TextEditPanel';
 import { ImageEditPanel } from '@/components/builder/ImageEditPanel';
@@ -64,6 +65,7 @@ const Index = () => {
   const [isEditorDark, setIsEditorDark] = useState(false);
   const [showLayoutOverview, setShowLayoutOverview] = useState(false);
   const [showTemplates, setShowTemplates] = useState(false);
+  const [showAIModal, setShowAIModal] = useState(false);
   
   // Panel states
   const [showButtonPanel, setShowButtonPanel] = useState(false);
@@ -206,6 +208,171 @@ const Index = () => {
     toast.success('Template loaded');
   };
 
+  const handleAIGenerate = (prompt: string) => {
+    // AI generation logic - for now, generate based on keywords
+    const newBlocks: ComponentBlock[] = [];
+    const promptLower = prompt.toLowerCase();
+    
+    // Always add navbar
+    const navTemplate = componentTemplates.find(t => t.type === 'navbar');
+    if (navTemplate) {
+      newBlocks.push({
+        id: generateId(),
+        type: 'navbar',
+        content: { ...navTemplate.defaultContent },
+        styles: { paddingTop: '0', paddingBottom: '0', marginTop: '0', marginBottom: '0' },
+      });
+    }
+
+    // Add hero
+    if (promptLower.includes('hero') || promptLower.includes('landing') || promptLower.includes('page')) {
+      const heroTemplate = componentTemplates.find(t => t.type === 'hero');
+      if (heroTemplate) {
+        newBlocks.push({
+          id: generateId(),
+          type: 'hero',
+          content: { ...heroTemplate.defaultContent },
+          styles: { paddingTop: '0', paddingBottom: '0', marginTop: '0', marginBottom: '0' },
+        });
+      }
+    }
+
+    // Add features
+    if (promptLower.includes('feature')) {
+      const featuresTemplate = componentTemplates.find(t => t.type === 'features');
+      if (featuresTemplate) {
+        newBlocks.push({
+          id: generateId(),
+          type: 'features',
+          content: { ...featuresTemplate.defaultContent },
+          styles: { paddingTop: '0', paddingBottom: '0', marginTop: '0', marginBottom: '0' },
+        });
+      }
+    }
+
+    // Add testimonials
+    if (promptLower.includes('testimonial')) {
+      const testimonialsTemplate = componentTemplates.find(t => t.type === 'testimonials');
+      if (testimonialsTemplate) {
+        newBlocks.push({
+          id: generateId(),
+          type: 'testimonials',
+          content: { ...testimonialsTemplate.defaultContent },
+          styles: { paddingTop: '0', paddingBottom: '0', marginTop: '0', marginBottom: '0' },
+        });
+      }
+    }
+
+    // Add pricing
+    if (promptLower.includes('pricing') || promptLower.includes('price')) {
+      const pricingTemplate = componentTemplates.find(t => t.type === 'pricing');
+      if (pricingTemplate) {
+        newBlocks.push({
+          id: generateId(),
+          type: 'pricing',
+          content: { ...pricingTemplate.defaultContent },
+          styles: { paddingTop: '0', paddingBottom: '0', marginTop: '0', marginBottom: '0' },
+        });
+      }
+    }
+
+    // Add team
+    if (promptLower.includes('team')) {
+      const teamTemplate = componentTemplates.find(t => t.type === 'team');
+      if (teamTemplate) {
+        newBlocks.push({
+          id: generateId(),
+          type: 'team',
+          content: { ...teamTemplate.defaultContent },
+          styles: { paddingTop: '0', paddingBottom: '0', marginTop: '0', marginBottom: '0' },
+        });
+      }
+    }
+
+    // Add gallery
+    if (promptLower.includes('gallery') || promptLower.includes('portfolio')) {
+      const galleryTemplate = componentTemplates.find(t => t.type === 'imageGallery');
+      if (galleryTemplate) {
+        newBlocks.push({
+          id: generateId(),
+          type: 'imageGallery',
+          content: { ...galleryTemplate.defaultContent },
+          styles: { paddingTop: '0', paddingBottom: '0', marginTop: '0', marginBottom: '0' },
+        });
+      }
+    }
+
+    // Add contact
+    if (promptLower.includes('contact')) {
+      const contactTemplate = componentTemplates.find(t => t.type === 'contact');
+      if (contactTemplate) {
+        newBlocks.push({
+          id: generateId(),
+          type: 'contact',
+          content: { ...contactTemplate.defaultContent },
+          styles: { paddingTop: '0', paddingBottom: '0', marginTop: '0', marginBottom: '0' },
+        });
+      }
+    }
+
+    // Add newsletter
+    if (promptLower.includes('newsletter') || promptLower.includes('signup')) {
+      const newsletterTemplate = componentTemplates.find(t => t.type === 'newsletter');
+      if (newsletterTemplate) {
+        newBlocks.push({
+          id: generateId(),
+          type: 'newsletter',
+          content: { ...newsletterTemplate.defaultContent },
+          styles: { paddingTop: '0', paddingBottom: '0', marginTop: '0', marginBottom: '0' },
+        });
+      }
+    }
+
+    // Add CTA
+    if (promptLower.includes('cta') || promptLower.includes('call to action')) {
+      const ctaTemplate = componentTemplates.find(t => t.type === 'cta');
+      if (ctaTemplate) {
+        newBlocks.push({
+          id: generateId(),
+          type: 'cta',
+          content: { ...ctaTemplate.defaultContent },
+          styles: { paddingTop: '0', paddingBottom: '0', marginTop: '0', marginBottom: '0' },
+        });
+      }
+    }
+
+    // Add FAQ
+    if (promptLower.includes('faq')) {
+      const faqTemplate = componentTemplates.find(t => t.type === 'faq');
+      if (faqTemplate) {
+        newBlocks.push({
+          id: generateId(),
+          type: 'faq',
+          content: { ...faqTemplate.defaultContent },
+          styles: { paddingTop: '0', paddingBottom: '0', marginTop: '0', marginBottom: '0' },
+        });
+      }
+    }
+
+    // Always add footer
+    const footerTemplate = componentTemplates.find(t => t.type === 'footer');
+    if (footerTemplate) {
+      newBlocks.push({
+        id: generateId(),
+        type: 'footer',
+        content: { ...footerTemplate.defaultContent },
+        styles: { paddingTop: '0', paddingBottom: '0', marginTop: '0', marginBottom: '0' },
+      });
+    }
+
+    if (newBlocks.length > 0) {
+      setBlocks(newBlocks);
+      toast.success(`Generated ${newBlocks.length} sections based on your prompt`);
+    } else {
+      toast.error('Could not understand the prompt. Try being more specific.');
+    }
+  };
+
   const closeAllPanels = () => {
     setShowButtonPanel(false);
     setShowTextPanel(false);
@@ -264,6 +431,7 @@ const Index = () => {
           onToggleTheme={handleToggleEditorTheme}
           onOpenLayoutOverview={() => setShowLayoutOverview(true)}
           onOpenTemplates={() => setShowTemplates(true)}
+          onOpenAIMode={() => setShowAIModal(true)}
         />
       
       <div className="flex-1 flex overflow-hidden">
@@ -399,6 +567,12 @@ const Index = () => {
         isOpen={showTemplates}
         onClose={() => setShowTemplates(false)}
         onSelectTemplate={handleSelectTemplate}
+      />
+
+      <AIPromptModal
+        isOpen={showAIModal}
+        onClose={() => setShowAIModal(false)}
+        onGenerate={handleAIGenerate}
       />
       </div>
     </div>

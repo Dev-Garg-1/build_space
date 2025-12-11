@@ -80,7 +80,11 @@ const getEditableFields = (block: ComponentBlock) => {
   );
 
   const imageKeys = Object.keys(content).filter(k => 
-    k.toLowerCase().includes('image') || k.toLowerCase().includes('avatar') || k.toLowerCase().includes('logo')
+    (k.toLowerCase().includes('image') || 
+     k.toLowerCase().includes('avatar') || 
+     k.toLowerCase().includes('logo') ||
+     k.toLowerCase().includes('photo') ||
+     (k.toLowerCase().includes('url') && !k.toLowerCase().includes('video')))
   );
 
   const buttonKeys = Object.keys(content).filter(k => 
