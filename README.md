@@ -121,14 +121,14 @@ Hackathons and product sprints live or die on speed of iteration. Designers want
 > You can also add GIFs to showcase drag-and-drop and AI generation.
 
 - Builder overview (canvas + sidebar + editor):
-  - `![Builder overview](./docs/screenshots/builder-overview.png)`
+  - ![Builder overview](./docs/screenshots/builder-overview.png)
 - Drag-and-drop sections:
-  - `![Drag and drop](./docs/screenshots/drag-drop.png)`
+  - ![Drag and drop](./docs/screenshots/drag-drop.png)
 - Section style editor:
-  - `![Section editor](./docs/screenshots/section-editor.png)`
+  - ![Section editor](./docs/screenshots/section-editor.png)
 - Export & preview:
-  - `![Preview and export](./docs/screenshots/preview-export.png)`
-  - `![Preview and export](./docs/screenshots/preview-export-2.png)`
+  - ![Preview and export](./docs/screenshots/preview-export.png)
+  - ![Preview and export](./docs/screenshots/preview-export-2.png)
 
 ---
 
