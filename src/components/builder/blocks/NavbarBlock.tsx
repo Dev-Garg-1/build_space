@@ -1,7 +1,7 @@
 import { BaseBlockProps } from '../types';
 import { EditableText } from '../EditableText';
 import { EditableButton } from '../EditableButton';
-import { Plus, X } from 'lucide-react';
+import { Plus, X, Menu } from 'lucide-react';
 import { useState } from 'react';
 
 export const NavbarBlock = ({ 
@@ -13,6 +13,7 @@ export const NavbarBlock = ({
 }: BaseBlockProps) => {
   const { content } = block;
   const [hoveredLink, setHoveredLink] = useState<number | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const getNavLinks = () => {
     const links: { label: string; href: string }[] = [];
@@ -61,8 +62,9 @@ export const NavbarBlock = ({
   };
 
   return (
-    <nav className="bg-slate-900 text-white px-6 py-4">
+    <nav className="bg-slate-900 text-white px-4 md:px-6 py-4">
       <div className="max-w-6xl mx-auto flex items-center justify-between">
+        {/* Logo */}
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-cyan-500 rounded-lg flex items-center justify-center">
             <span className="font-bold text-slate-900 text-sm">
@@ -79,7 +81,8 @@ export const NavbarBlock = ({
           />
         </div>
 
-        <div className="flex items-center gap-6">
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center gap-6">
           {navLinks.map((link, idx) => (
             <div
               key={idx}
@@ -117,23 +120,69 @@ export const NavbarBlock = ({
           )}
         </div>
 
+        {/* Desktop CTA + Mobile Hamburger */}
         <div className="flex items-center gap-3">
-          <EditableButton
-            text={content.ctaText || 'Get Started'}
-            bgColor={content.ctaColor || '#06b6d4'}
-            textColor={content.ctaTextColor || '#0f172a'}
-            link={content.ctaLink || '#'}
-            className="px-4 py-2 rounded-lg font-medium"
-            isPreview={isPreview}
-            onEditButton={onEditButton}
-            buttonId={`${block.id}-cta-btn`}
-            onTextChange={(v) => handleUpdateField('ctaText', v)}
-            onBgColorChange={(v) => handleUpdateField('ctaColor', v)}
-            onTextColorChange={(v) => handleUpdateField('ctaTextColor', v)}
-            onLinkChange={(v) => handleUpdateField('ctaLink', v)}
-          />
+          {/* Desktop CTA */}
+          <div className="hidden md:block">
+            <EditableButton
+              text={content.ctaText || 'Get Started'}
+              bgColor={content.ctaColor || '#06b6d4'}
+              textColor={content.ctaTextColor || '#0f172a'}
+              link={content.ctaLink || '#'}
+              className="px-4 py-2 rounded-lg font-medium"
+              isPreview={isPreview}
+              onEditButton={onEditButton}
+              buttonId={`${block.id}-cta-btn`}
+              onTextChange={(v) => handleUpdateField('ctaText', v)}
+              onBgColorChange={(v) => handleUpdateField('ctaColor', v)}
+              onTextColorChange={(v) => handleUpdateField('ctaTextColor', v)}
+              onLinkChange={(v) => handleUpdateField('ctaLink', v)}
+            />
+          </div>
+
+          {/* Mobile Hamburger */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 rounded-lg hover:bg-slate-800 transition-colors"
+          >
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden mt-4 pt-4 border-t border-slate-700">
+          <div className="flex flex-col gap-3">
+            {navLinks.map((link, idx) => (
+              <a
+                key={idx}
+                href={link.href}
+                className="text-slate-300 hover:text-white transition-colors py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {link.label}
+              </a>
+            ))}
+            <div className="pt-2">
+              <EditableButton
+                text={content.ctaText || 'Get Started'}
+                bgColor={content.ctaColor || '#06b6d4'}
+                textColor={content.ctaTextColor || '#0f172a'}
+                link={content.ctaLink || '#'}
+                className="px-4 py-2 rounded-lg font-medium w-full text-center"
+                isPreview={isPreview}
+                onEditButton={onEditButton}
+                buttonId={`${block.id}-cta-btn-mobile`}
+                onTextChange={(v) => handleUpdateField('ctaText', v)}
+                onBgColorChange={(v) => handleUpdateField('ctaColor', v)}
+                onTextColorChange={(v) => handleUpdateField('ctaTextColor', v)}
+                onLinkChange={(v) => handleUpdateField('ctaLink', v)}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   );
 };

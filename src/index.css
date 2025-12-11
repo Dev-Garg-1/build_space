@@ -215,6 +215,30 @@
   .preview-section {
     @apply bg-canvas rounded-lg overflow-hidden;
   }
+
+  /* Mobile preview styles */
+  .preview-mobile {
+    @apply w-full;
+  }
+
+  .preview-mobile .md\\:flex {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .preview-mobile .hidden.md\\:flex,
+  .preview-mobile .hidden.md\\:block {
+    display: none !important;
+  }
+
+  .preview-mobile .md\\:hidden {
+    display: flex !important;
+  }
+
+  .preview-tablet .hidden.md\\:flex,
+  .preview-tablet .hidden.md\\:block {
+    display: flex !important;
+  }
 }
 
 @layer utilities {

@@ -1,4 +1,4 @@
-import { Eye, Download, Undo, Redo, Layers, Sun, Moon, LayoutTemplate } from 'lucide-react';
+import { Eye, Download, Undo, Redo, Layers, Sun, Moon, LayoutTemplate, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface BuilderToolbarProps {
@@ -13,6 +13,7 @@ interface BuilderToolbarProps {
   onToggleTheme: () => void;
   onOpenLayoutOverview: () => void;
   onOpenTemplates: () => void;
+  onOpenAIMode?: () => void;
 }
 
 export const BuilderToolbar = ({
@@ -26,7 +27,8 @@ export const BuilderToolbar = ({
   isDarkTheme,
   onToggleTheme,
   onOpenLayoutOverview,
-  onOpenTemplates
+  onOpenTemplates,
+  onOpenAIMode
 }: BuilderToolbarProps) => {
   return (
     <header className="h-12 bg-card border-b border-border flex items-center justify-between px-4">
@@ -45,6 +47,15 @@ export const BuilderToolbar = ({
           <LayoutTemplate className="w-4 h-4" />
           <span>Templates</span>
         </button>
+        {onOpenAIMode && (
+          <button 
+            onClick={onOpenAIMode} 
+            className="flex items-center gap-1.5 text-sm px-2 py-1 rounded transition-colors bg-gradient-to-r from-violet-500/10 to-purple-500/10 text-violet-600 dark:text-violet-400 hover:from-violet-500/20 hover:to-purple-500/20"
+          >
+            <Sparkles className="w-4 h-4" />
+            <span>AI Mode</span>
+          </button>
+        )}
         <button 
           onClick={onOpenLayoutOverview} 
           className="text-sm text-muted-foreground hover:text-foreground px-2 py-1 rounded hover:bg-secondary transition-colors"
