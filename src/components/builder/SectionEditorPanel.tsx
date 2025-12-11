@@ -411,14 +411,17 @@ export const SectionEditorPanel = ({ block, onUpdateContent, onUpdateStyles, onC
                   }
                 };
 
+                const imageUrl = content[field.key] || '';
+                const isValidUrl = imageUrl.startsWith('http') || imageUrl.startsWith('data:') || imageUrl.startsWith('/');
+
                 return (
                   <div key={field.key} className="space-y-2">
                     <label className="text-xs text-muted-foreground">{field.label}</label>
                     <Input
-                      value={content[field.key] || ''}
+                      value={imageUrl}
                       onChange={(e) => handleContentChange(field.key, e.target.value)}
                       className="h-8 text-xs"
-                      placeholder="Image URL"
+                      placeholder="Paste image URL here..."
                     />
                     <div className="flex gap-2">
                       <label className="flex-1 flex items-center justify-center gap-2 h-8 px-3 rounded-md border border-dashed border-border hover:border-primary hover:bg-primary/5 cursor-pointer transition-colors">
@@ -432,18 +435,26 @@ export const SectionEditorPanel = ({ block, onUpdateContent, onUpdateStyles, onC
                         />
                       </label>
                     </div>
-                    {content[field.key] && (
-                      <div className="relative aspect-video bg-secondary rounded-lg overflow-hidden">
+                    <div className="relative aspect-video bg-secondary rounded-lg overflow-hidden border border-border">
+                      {isValidUrl ? (
                         <img 
-                          src={content[field.key]} 
+                          src={imageUrl} 
                           alt="Preview" 
                           className="w-full h-full object-cover"
                           onError={(e) => {
-                            (e.target as HTMLImageElement).src = 'https://via.placeholder.com/300x200?text=Invalid+URL';
+                            (e.target as HTMLImageElement).style.display = 'none';
+                            (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
+                          }}
+                          onLoad={(e) => {
+                            (e.target as HTMLImageElement).style.display = 'block';
+                            (e.target as HTMLImageElement).nextElementSibling?.classList.add('hidden');
                           }}
                         />
+                      ) : null}
+                      <div className={`absolute inset-0 flex items-center justify-center text-xs text-muted-foreground ${isValidUrl ? 'hidden' : ''}`}>
+                        {imageUrl ? 'Loading...' : 'No image'}
                       </div>
-                    )}
+                    </div>
                   </div>
                 );
               })}

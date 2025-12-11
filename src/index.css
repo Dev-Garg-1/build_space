@@ -239,6 +239,34 @@
   .preview-tablet .hidden.md\\:block {
     display: flex !important;
   }
+
+  /* Mobile image adjustments */
+  .preview-mobile img {
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: cover !important;
+  }
+
+  .preview-mobile .grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  .preview-mobile .md\\:grid-cols-2,
+  .preview-mobile .md\\:grid-cols-3,
+  .preview-mobile .md\\:grid-cols-4 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Tablet responsive */
+  .preview-tablet img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  .preview-tablet .md\\:grid-cols-3 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
 }
 
 @layer utilities {
